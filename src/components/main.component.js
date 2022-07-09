@@ -1,27 +1,26 @@
 import React from "react"
-import { nanoid } from 'nanoid'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import CountrySnapshot from "./country-snapshot.component"
 import SearchBar from "../sub-components/search"
 import DropDown from "../sub-components/dropdown"
+import Loading from "../sub-components/Loading.component"
 
-const Section = styled.section`
-  min-height: 300px;
+
+const Section = styled.article`
   background-color: ${props => props.mode === true ? "hsl(207, 26%, 17%)" : "hsl(0, 0%, 98%)"};
-  padding: 40px 60px 0px 60px;
   
+
   .form-elements {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 40px;
+    padding: 40px 60px;
   }
 `
 
 const CountryInfo = styled.div`
+  padding: 0px 60px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   grid-auto-rows: repeat(2, fit-content);
@@ -34,32 +33,39 @@ const CountryInfo = styled.div`
 
 function MainComponent (props) {
 
-  const [countryData, setCountryData] = React.useState([]);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = React.useState(''); 
+  const [isLoading, setISLoading] = React.useState(true)
 
-  const trackSearchQuery = function (event) {
-    setSearchQuery(event.target.value.toLowerCase());
-  } 
-
-  const filteredCountries = countryData.filter((elem) => {
-    return elem.name.toLowerCase().includes(searchQuery)
-  })
+  const getDataAllCountries = async() => { 
+    let response = await fetch("https://restcountries.com/v3.1/all");
+    let result = await response.json();
+    props.handleClick(result); 
+    setISLoading(false); 
+  }
   
-  React.useEffect(() => {
-    fetch("https://restcountries.com/v2/all")
-    .then(res => res.json())
-    .then(data => 
-      setCountryData(data)
-    )
+
+  React.useEffect(() => { 
+    getDataAllCountries();
   }, [])
+  
+  const trackSearchQuery = function (e) { 
+    setSearchQuery(e.target.value.toLowerCase());
+  }
 
+  const changeLoadingState = (bool) => {
+    setISLoading(bool);
+  }
 
-  const countryElements = filteredCountries.map((country) => {
+  const filteredCountries = props.countryData.filter((country) => {
+    return country.name.common.toLowerCase().includes(searchQuery);
+  })
+
+  const filteredCountriesData = filteredCountries.map((country) => { 
     return <CountrySnapshot 
-      key = {nanoid()}
+      key = {country.name.common}
       population = {country.population}
       image = {country.flags.png}
-      name = {country.name}
+      name = {country.name.common}
       capital = {country.capital}
       region = {country.region}
       mode = {props.mode}
@@ -71,14 +77,24 @@ function MainComponent (props) {
 
       <div className = "form-elements">
         <SearchBar 
-        mode = {props.mode}
-        handleClick = {trackSearchQuery}
+          mode = {props.mode}
+          handleChange = {trackSearchQuery} 
         />
-        <DropDown mode = {props.mode}  />
+        <DropDown 
+          mode = {props.mode} 
+          changeLoadingState = {changeLoadingState}
+          updateCountryData = {props.handleClick}
+        />
       </div>
 
       <CountryInfo >
-        {countryElements}
+         {
+          isLoading? (
+            <Loading mode = {props.mode} />
+          ) : (
+            filteredCountriesData
+          )
+         }
       </CountryInfo>
        
     </Section>

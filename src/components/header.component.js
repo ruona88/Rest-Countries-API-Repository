@@ -2,8 +2,9 @@ import React from "react"
 import styled from 'styled-components'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMoon, faLightbulb } from "@fortawesome/free-solid-svg-icons"
+import {Outlet} from "react-router-dom"
 
-const Section = styled.section`
+const NavContainer = styled.div`
     background-color: ${props => props.mode === true? "hsl(209, 23%, 22%)" : "hsl(0, 0%, 100%)"};
     padding: 20px 60px;
     display: flex;
@@ -30,6 +31,7 @@ const Section = styled.section`
     }
 
     .icon {
+        padding: 0px 10px;
         margin-left: auto;
         margin-right: 10px;
         color: ${props => props.mode === true? "hsl(0, 0%, 98%)" : "hsl(209, 23%, 22%)"};
@@ -46,14 +48,17 @@ const Section = styled.section`
 export default function Header (props) {
     
     return (
-        <Section mode = {props.mode}>
-            <span className = "logo">Where in the world?</span>
-            <FontAwesomeIcon 
-              icon= {props.mode? faMoon: faLightbulb} 
-              className = "icon"
-              onClick = {props.handleClick}
-            />
-            <span className = "mode"  >{props.mode? "Light Mode": "Dark Mode"}</span>
-        </Section>
+        <section >
+            <NavContainer mode = {props.mode} >
+                <span className = "logo">Where in the world?</span>
+                <FontAwesomeIcon 
+                icon= {props.mode? faMoon: faLightbulb} 
+                className = "icon"
+                onClick = {props.handleClick}
+                />
+                <span className = "mode"  >{props.mode? "Light Mode": "Dark Mode"}</span>
+            </NavContainer>
+            <Outlet />
+        </section>
     )
 }

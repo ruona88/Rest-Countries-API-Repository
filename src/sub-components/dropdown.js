@@ -10,6 +10,7 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   background-color: ${props => props.mode === true? "hsl(209, 23%, 22%)" : "hsl(0, 0%, 100%)"};
+  box-shadow: ${props => !props.mode ? "1px 1px 1px 0px lightgrey": "none"};
   border-radius: 10px;
   cursor: pointer;
 
@@ -32,6 +33,8 @@ const OptionsContainer = styled.div `
   width: 100%;
   padding: 10px 0px;
   background-color: ${props => props.mode === true? "hsl(209, 23%, 22%)" : "hsl(0, 0%, 100%)"};
+  box-shadow: ${props => !props.mode ? "1px 1px 1px 0px lightgrey": "none"};
+  z-index: 5;
   border-radius: 10px;
   transform-origin: top;
   transition: all 0.3s linear;
@@ -50,6 +53,8 @@ const Options = styled.div`
 const Label = styled.label`
     font-weight: 300;
     cursor: pointer;
+    width: 100%;
+    display: block;
     color: ${props => props.mode === true? "white": "hsl(207, 26%, 17%)"};
 `
 
@@ -61,10 +66,23 @@ export default function DropDown (props) {
         setDisplayDropDown(currentValue => !currentValue)
     }
 
+    const changeCountryData = async (e) => {
+      props.changeLoadingState(true);
+      const region = e.target.innerText.toLowerCase();
+      
+      let response = await fetch(`https://restcountries.com/v3.1/region/${region}`)
+      let result = await response.json();
+      
+      props.updateCountryData(result); 
+      props.changeLoadingState(false);     
+    }
+
     return (
         <Container mode = {props.mode}>
            <h5 onClick = {toggleDropDown} >Filter by Region</h5>
            <OptionsContainer 
+              id = "container"
+              //onClick = {filterByDropDown}
               mode = {props.mode} 
               style = {{
                 transform: !dislayDropDown? "scale(0)": "scale(1)"
@@ -73,27 +91,27 @@ export default function DropDown (props) {
 
               <Options mode = {props.mode} >
                 <input type = "radio" name= "filter-query" id = "africa" className = 'radio'/>
-                <Label htmlfor= "africa" mode = {props.mode} onClick = {toggleDropDown} >Africa</Label>
+                <Label htmlfor= "africa" mode = {props.mode} className = "continent" onClick = {changeCountryData} >Africa</Label>
               </Options>
 
               <Options mode = {props.mode} >
                 <input type = "radio" name= "filter-query" id = "america" className = 'radio' />
-                <Label htmlfor= "america" mode = {props.mode} onClick = {toggleDropDown} >America</Label>
+                <Label htmlfor= "america" mode = {props.mode} onClick = {changeCountryData} >America</Label>
               </Options>
 
               <Options mode = {props.mode} >
                 <input type = "radio" name= "filter-query" id = "asia" className = 'radio' />
-                <Label htmlfor= "asia" mode = {props.mode} onClick = {toggleDropDown} >Asia</Label>
+                <Label htmlfor= "asia" mode = {props.mode} onClick = {changeCountryData}  >Asia</Label>
               </Options>
 
               <Options mode = {props.mode} >
                 <input type = "radio" name= "filter-query" id = "europe" className = 'radio' />
-                <Label htmlfor= "europe" mode = {props.mode} onClick = {toggleDropDown} >Europe</Label>
+                <Label htmlfor= "europe" mode = {props.mode} onClick = {changeCountryData} >Europe</Label>
               </Options>
 
               <Options mode = {props.mode} >
                 <input type = "radio" name= "filter-query" id = "oceania" className = 'radio' />
-                <Label htmlfor= "oceania" mode = {props.mode} onClick = {toggleDropDown} >Oceania</Label>
+                <Label htmlfor= "oceania" mode = {props.mode} onClick = {changeCountryData} >Oceania</Label>
               </Options>
 
             </OptionsContainer>

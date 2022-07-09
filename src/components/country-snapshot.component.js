@@ -1,10 +1,13 @@
 import React from "react"
 import styled from 'styled-components'
+import {Link} from "react-router-dom"
 
-const Article = styled.article`
+
+const Article = styled.div`
   cursor: pointer;
   max-width: 400px;
   background-color: ${props => props.mode === true? "hsl(209, 23%, 22%)" : "hsl(0, 0%, 100%)"};
+  box-shadow: ${props => !props.mode ? "1px 1px 1px 0px lightgrey": "none"};
   transition: all 0.3s linear;
 
   &:hover {
@@ -69,9 +72,10 @@ const InfoDiv = styled.div`
 
 export default function CountrySnapshot (props) {
     return (
+       <Link to = {`${props.name.toLowerCase().split(" ").join("")}`} style = {{textDecoration: "none"}} >
         <Article mode = {props.mode} >
           <div className = "background-image">
-            <img src = {props.image} className = "image"/>
+            <img src = {props.image} className = "image" alt = ""/>
           </div>
           <InfoDiv mode = {props.mode} >
             <p className = "card-name" >{props.name}</p>
@@ -80,13 +84,14 @@ export default function CountrySnapshot (props) {
                 className = "card-info-item" >Population: <span className = "card-info-item-spec">{props.population.toLocaleString()}</span>
               </li>
               <li 
-                className = "card-info-item" >Region: <span className = "card-info-item-spec" >{props.region}</span>
-            </li>
+                className = "card-info-item" >Region: <span className = "card-info-item-spec region" >{props.region}</span>
+              </li>
               <li 
               className = "card-info-item" >Capital: <span className = "card-info-item-spec" >{props.capital}</span>
-            </li>
+              </li>
             </ol>
           </InfoDiv>
-        </Article>
+        </Article>   
+      </Link>
     )
 }
