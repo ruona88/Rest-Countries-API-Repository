@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/Rest-Countries-API-Repository/static/css/main.ff899de6.css",
+    "main.js": "/Rest-Countries-API-Repository/static/js/main.e2ecbaec.js",
+    "static/js/787.e003f478.chunk.js": "/Rest-Countries-API-Repository/static/js/787.e003f478.chunk.js",
+    "static/media/react-brands-black.svg": "/Rest-Countries-API-Repository/static/media/react-brands-black.b7f2505cad024110bd6b04593b54b8d6.svg",
+    "static/media/react-brands-white.svg": "/Rest-Countries-API-Repository/static/media/react-brands-white.b5c86253e798a9ca125baa81945aac4e.svg",
+    "index.html": "/Rest-Countries-API-Repository/index.html",
+    "static/media/magnifying-glass-solid-black.svg": "/Rest-Countries-API-Repository/static/media/magnifying-glass-solid-black.b186d08aeaabb0216465fcc46d424ae7.svg",
+    "static/media/magnifying-glass-solid-white.svg": "/Rest-Countries-API-Repository/static/media/magnifying-glass-solid-white.365d3a4e5e3addb2f952d6691bc53597.svg",
+    "main.ff899de6.css.map": "/Rest-Countries-API-Repository/static/css/main.ff899de6.css.map",
+    "main.e2ecbaec.js.map": "/Rest-Countries-API-Repository/static/js/main.e2ecbaec.js.map",
+    "787.e003f478.chunk.js.map": "/Rest-Countries-API-Repository/static/js/787.e003f478.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff899de6.css",
+    "static/js/main.e2ecbaec.js"
+  ]
+}
