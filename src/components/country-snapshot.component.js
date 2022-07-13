@@ -14,7 +14,7 @@ const Article = styled.div`
     transform: scale(1.1);
   }
 
-  .background-image {
+  .background-image-div {
     height: 140px;
 
     .image {
@@ -74,7 +74,7 @@ export default function CountrySnapshot (props) {
     return (
        <Link to = {`${props.name.toLowerCase().split(" ").join("")}`} style = {{textDecoration: "none"}} >
         <Article mode = {props.mode} >
-          <div className = "background-image">
+          <div className = "background-image-div">
             <img src = {props.image} className = "image" alt = ""/>
           </div>
           <InfoDiv mode = {props.mode} >

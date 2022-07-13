@@ -1,7 +1,88 @@
-import React from "react"
+import React, {useContext} from "react"
+import {CountryData} from "../Context/CountryDataContext"
 import styled from 'styled-components'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
+
+
+
+export default function DropDown (props) {
+
+  const contextObject = useContext(CountryData)
+    
+  const [dislayDropDown, setDisplayDropDown] = React.useState(false);
+
+  const toggleDropDown = function () {
+      setDisplayDropDown(currentValue => !currentValue)
+  }
+
+  return (
+      <Container mode = {props.mode}>
+          <h5 onClick = {toggleDropDown} >{contextObject.selected}</h5>
+          <OptionsContainer 
+            id = "container"
+            //onClick = {filterByDropDown}
+            mode = {props.mode} 
+            style = {{
+              transform: !dislayDropDown? "scale(0)": "scale(1)"
+            }}
+          >
+
+
+            <Options mode = {props.mode} >
+              <input type = "radio" name= "filter-query" id = "africa" className = 'radio'/>
+              <Label 
+                htmlfor= "africa" 
+                mode = {props.mode} 
+                className = "continent" 
+                onClick = {contextObject.restoreAllCountries} >All</Label>
+            </Options>
+
+            <Options mode = {props.mode} >
+              <input type = "radio" name= "filter-query" id = "africa" className = 'radio'/>
+              <Label 
+                htmlfor= "africa" 
+                mode = {props.mode} 
+                className = "continent" 
+                onClick = {(e) => {contextObject.applyFilterByRegion(e.target.innerText)}} >Africa</Label>
+            </Options>
+
+            <Options mode = {props.mode} >
+              <input type = "radio" name= "filter-query" id = "america" className = 'radio' />
+              <Label 
+                htmlfor= "america" 
+                mode = {props.mode} 
+                onClick = {(e) => {contextObject.applyFilterByRegion(e.target.innerText)}}>Americas</Label>
+            </Options>
+
+            <Options mode = {props.mode} >
+              <input type = "radio" name= "filter-query" id = "asia" className = 'radio' />
+              <Label 
+                htmlfor= "asia" 
+                mode = {props.mode} 
+                onClick = {(e) => {contextObject.applyFilterByRegion(e.target.innerText)}}>Asia</Label>
+            </Options>
+
+            <Options mode = {props.mode} >
+              <input type = "radio" name= "filter-query" id = "europe" className = 'radio' />
+              <Label 
+                htmlfor= "europe" 
+                mode = {props.mode} 
+                onClick = {(e) => {contextObject.applyFilterByRegion(e.target.innerText)}}>Europe</Label>
+            </Options>
+
+            <Options mode = {props.mode} >
+              <input type = "radio" name= "filter-query" id = "oceania" className = 'radio' />
+              <Label 
+              htmlfor= "oceania" 
+              mode = {props.mode} 
+              onClick = {(e) => {contextObject.applyFilterByRegion(e.target.innerText)}}>Oceania</Label>
+            </Options>
+
+          </OptionsContainer>
+      </Container>
+    )
+}
 
 const Container = styled.div`
   color: white;
@@ -57,64 +138,3 @@ const Label = styled.label`
     display: block;
     color: ${props => props.mode === true? "white": "hsl(207, 26%, 17%)"};
 `
-
-export default function DropDown (props) {
-    
-    const [dislayDropDown, setDisplayDropDown] = React.useState(false);
-
-    const toggleDropDown = function () {
-        setDisplayDropDown(currentValue => !currentValue)
-    }
-
-    const changeCountryData = async (e) => {
-      props.changeLoadingState(true);
-      const region = e.target.innerText.toLowerCase();
-      
-      let response = await fetch(`https://restcountries.com/v3.1/region/${region}`)
-      let result = await response.json();
-      
-      props.updateCountryData(result); 
-      props.changeLoadingState(false);     
-    }
-
-    return (
-        <Container mode = {props.mode}>
-           <h5 onClick = {toggleDropDown} >Filter by Region</h5>
-           <OptionsContainer 
-              id = "container"
-              //onClick = {filterByDropDown}
-              mode = {props.mode} 
-              style = {{
-                transform: !dislayDropDown? "scale(0)": "scale(1)"
-              }}
-            >
-
-              <Options mode = {props.mode} >
-                <input type = "radio" name= "filter-query" id = "africa" className = 'radio'/>
-                <Label htmlfor= "africa" mode = {props.mode} className = "continent" onClick = {changeCountryData} >Africa</Label>
-              </Options>
-
-              <Options mode = {props.mode} >
-                <input type = "radio" name= "filter-query" id = "america" className = 'radio' />
-                <Label htmlfor= "america" mode = {props.mode} onClick = {changeCountryData} >America</Label>
-              </Options>
-
-              <Options mode = {props.mode} >
-                <input type = "radio" name= "filter-query" id = "asia" className = 'radio' />
-                <Label htmlfor= "asia" mode = {props.mode} onClick = {changeCountryData}  >Asia</Label>
-              </Options>
-
-              <Options mode = {props.mode} >
-                <input type = "radio" name= "filter-query" id = "europe" className = 'radio' />
-                <Label htmlfor= "europe" mode = {props.mode} onClick = {changeCountryData} >Europe</Label>
-              </Options>
-
-              <Options mode = {props.mode} >
-                <input type = "radio" name= "filter-query" id = "oceania" className = 'radio' />
-                <Label htmlfor= "oceania" mode = {props.mode} onClick = {changeCountryData} >Oceania</Label>
-              </Options>
-
-            </OptionsContainer>
-        </Container>
-    )
-}
